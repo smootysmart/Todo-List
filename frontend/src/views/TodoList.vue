@@ -36,9 +36,6 @@ const handleDelete = async (id: number) => {
 };
 
 const updateCompleted = async (todo: Todo) => {
-  selectedTodo.value = todo;
-  console.log(selectedTodo.value);
-  console.log(todo);
   await updateTodoCompleted(todo);
   await loadTodos();
 };
