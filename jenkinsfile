@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'docker-runner'}
 
     environment {
         COMPOSE_PROJECT_NAME = "todo-stack-${BUILD_NUMBER}"
@@ -22,7 +22,7 @@ pipeline {
 stage('Health Check') {
             options {
                 // Total timeout for this entire stage (e.g., 2 minutes)
-                timeout(time: 2, unit: 'MINUTES')
+                timeout(time: 2, unit: 'minutes')
             }
             steps {
                 echo 'Waiting for Backend API and Frontend to become healthy...'
