@@ -14,7 +14,7 @@ pipeline {
 
         stage('Build & Start Services') {
             steps {
-                echo 'Building images and starting containers...'d
+                echo 'Building images and starting containers...'
                 sh 'docker compose up --build -d'
             }
         }
@@ -22,7 +22,7 @@ pipeline {
 stage('Health Check') {
             options {
                 // Total timeout for this entire stage (e.g., 2 minutes)
-                timeout(time: 2, unit: 'minutes')
+                timeout(time: 2, unit: 'MINUTES')
             }
             steps {
                 echo 'Waiting for Backend API and Frontend to become healthy...'
