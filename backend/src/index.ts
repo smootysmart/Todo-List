@@ -1,8 +1,9 @@
-import express from "express";
 import todoRoutes from "./routes/TodoRoutes";
 import { initializeDatabase } from "./database/Database";
-import cors from "cors";
 import dotenv from "dotenv";
+
+const express = require("express");
+const cors = require("cors");
 
 dotenv.config();
 
