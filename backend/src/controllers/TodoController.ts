@@ -1,35 +1,10 @@
 import { TodoService } from "../services/TodoService";
-
-type TodoRequest = {
-  params: {
-    id: string;
-  };
-};
-
-type CreateTodoRequest = {
-  body: {
-    title: string;
-  };
-};
-
-type UpdateTodoRequest = {
-  params: {
-    id: string;
-  };
-  body: {
-    title: string;
-    completed: boolean;
-  };
-};
-
-type UpdateTodoCompletedRequest = {
-  params: {
-    id: string;
-  };
-  body: {
-    completed: boolean;
-  };
-};
+import type {
+  CreateTodoDto,
+  TodoIdParamsDto,
+  UpdateTodoCompletedDto,
+  UpdateTodoDto,
+} from "../dtos";
 
 type TodoResponse = {
   json: (body: unknown) => TodoResponse;
@@ -40,23 +15,26 @@ type TodoResponse = {
 const todoService = new TodoService();
 
 export class TodoController {
-  async getAllTodos(req: TodoRequest, res: TodoResponse): Promise<void> {
+  async getAllTodos(
+    _req: Record<string, never>,
+    res: TodoResponse,
+  ): Promise<void> {
     const todos = await todoService.getAllTodos();
     res.json(todos);
   }
 
-  async getTodoById(req: TodoRequest, res: TodoResponse): Promise<void> {
+  async getTodoById(req: TodoIdParamsDto, res: TodoResponse): Promise<void> {
     const todoId = await todoService.getTodoById(Number(req.params.id));
     res.json(todoId);
   }
 
-  async createTodo(req: CreateTodoRequest, res: TodoResponse): Promise<void> {
+  async createTodo(req: CreateTodoDto, res: TodoResponse): Promise<void> {
     const { title } = req.body;
     const todo = await todoService.createTodo(title);
     res.status(201).json(todo);
   }
 
-  async updateTodo(req: UpdateTodoRequest, res: TodoResponse): Promise<void> {
+  async updateTodo(req: UpdateTodoDto, res: TodoResponse): Promise<void> {
     const { id } = req.params;
     const { title, completed } = req.body;
 
@@ -69,7 +47,7 @@ export class TodoController {
   }
 
   async updateTodoCompleted(
-    req: UpdateTodoCompletedRequest,
+    req: UpdateTodoCompletedDto,
     res: TodoResponse,
   ): Promise<void> {
     const { id } = req.params;
@@ -84,7 +62,7 @@ export class TodoController {
     res.json(todo);
   }
 
-  async deleteTodo(req: TodoRequest, res: TodoResponse): Promise<void> {
+  async deleteTodo(req: TodoIdParamsDto, res: TodoResponse): Promise<void> {
     const { id } = req.params;
     const success = await todoService.deleteTodo(Number(id));
 
