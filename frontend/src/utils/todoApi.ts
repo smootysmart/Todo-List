@@ -1,7 +1,9 @@
-import axios from 'axios';
-import { Todo } from '../types/Todo';
+import axios from "axios";
+import { Todo } from "../types/Todo";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = (
+  import.meta.env.VITE_API_BASE_URL || "/api/tasks"
+).replace(/\/$/, "");
 
 export const fetchTodos = async (): Promise<Todo[]> => {
   const response = await axios.get(`${API_BASE_URL}`);
