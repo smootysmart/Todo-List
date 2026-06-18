@@ -8,11 +8,12 @@ const cors = require("cors");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8081;
+const HOST = process.env.HOST || '0.0.0.0';
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your frontend's URL
+    origin: "http://host.docker.internal:5173", // Replace with your frontend's URL
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // Allow specific methods
     credentials: true, // Allow cookies if necessary
   }),
@@ -28,8 +29,8 @@ async function startServer(): Promise<void> {
     await initializeDatabase();
     console.log("Database ready!");
 
-    app.listen(PORT, () => {
-      console.log(`Server is running on http://localhost:${PORT}`);
+    app.listen(PORT, HOST, () => {
+      console.log(`Server is running on http://${HOST}:${PORT}`);
     });
   } catch (error) {
     console.error("Database connection error:", error);
