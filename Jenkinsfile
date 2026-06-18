@@ -64,9 +64,8 @@ stage('Health Check') {
             
             echo 'Disconnecting Jenkins Agent from network...'
             sh "docker network disconnect ${COMPOSE_PROJECT_NAME}_default jenkins-docker-agent || true"
-            
-            echo 'Cleaning up containers...'
-            sh 'docker compose down -v'
+
+            echo 'Cleanup skipped to allow manual testing.'
         }
         success {
             echo 'Pipeline completed successfully!'
