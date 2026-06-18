@@ -13,7 +13,7 @@ const HOST = process.env.HOST || '0.0.0.0';
 
 app.use(
   cors({
-    origin: "http://host.docker.internal:5173", // Replace with your frontend's URL
+    origin: "http://host.docker.internal:3000", // Replace with your frontend's URL
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // Allow specific methods
     credentials: true, // Allow cookies if necessary
   }),
