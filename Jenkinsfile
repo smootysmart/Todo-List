@@ -6,6 +6,18 @@ pipeline {
     }
 
     stages {
+        stage('Clean Environment') {
+            steps {
+                echo 'Cleaning up previous deployment and pruning system...'
+                // 1. สั่งยิงดับคอนเทนเนอร์สแต็กเดิมที่อาจจะรันค้างอยู่
+                sh 'docker compose down -v || true'
+                
+                // 2. สั่ง Prune ล้าง Image/Volume ผีสิงที่ไม่ได้ใช้งานทิ้งทันที
+                // เพิ่มแฟล็ก --force เพื่อให้มันทำงานอัตโนมัติโดยไม่ต้องรอเรากดกดยืนยัน (yes/no)
+                sh 'docker system prune -af --volumes'
+            }
+        }
+        
         stage('Checkout') {
             steps {
                 checkout scm
@@ -22,7 +34,7 @@ pipeline {
             }
         }
 
-stage('Health Check') {
+        stage('Health Check') {
             options {
                 // Total timeout for this entire stage (e.g., 2 minutes)
                 timeout(time: 2, unit: 'MINUTES')
