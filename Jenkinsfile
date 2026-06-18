@@ -38,10 +38,10 @@ stage('Health Check') {
                         
                         echo 'Checking Backend API health...'
                         // -f fails silently on server errors; -s runs in silent mode
-                        sh 'curl -fs http://backend:8081/api/tasks'
+                        sh 'curl -fs http://todo_backend:8081/api/tasks'
                         
                         echo 'Checking Frontend health...'
-                        sh 'curl -fs http://frontend:3000'
+                        sh 'curl -fs http://todo_frontend:3000'
                     }
                 }
                 echo 'All services are up and healthy!'
