@@ -16,11 +16,9 @@ pipeline {
             steps {
                 echo 'Building images and starting containers...'
                 sh 'docker compose up --build -d'
-
                 echo 'Connecting Jenkins Agent to the application network...'
+                // This lets the agent step inside the same network room as your backend
                 sh "docker network connect ${COMPOSE_PROJECT_NAME}_default jenkins-docker-agent || true"
-            }
-        }
             }
         }
 
@@ -61,8 +59,13 @@ stage('Health Check') {
 
     post {
         always {
-            echo 'Cleaning up containers and networks...'
-
+            echo 'Fetching container logs for debugging...'
+            sh 'docker compose logs || true'
+            
+            echo 'Disconnecting Jenkins Agent from network...'
+            sh "docker network disconnect ${COMPOSE_PROJECT_NAME}_default jenkins-docker-agent || true"
+            
+            echo 'Cleaning up containers...'
             sh 'docker compose down -v'
         }
         success {
