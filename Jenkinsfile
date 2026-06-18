@@ -16,6 +16,11 @@ pipeline {
             steps {
                 echo 'Building images and starting containers...'
                 sh 'docker compose up --build -d'
+
+                echo 'Connecting Jenkins Agent to the application network...'
+                sh "docker network connect ${COMPOSE_PROJECT_NAME}_default jenkins-docker-agent || true"
+            }
+        }
             }
         }
 
@@ -35,10 +40,10 @@ stage('Health Check') {
                         
                         echo 'Checking Backend API health...'
                         // -f fails silently on server errors; -s runs in silent mode
-                        sh 'curl -fs http://host.docker.internal:8081/api/tasks'
+                        sh 'curl -fs http://backend:8081/api/tasks'
                         
                         echo 'Checking Frontend health...'
-                        sh 'curl -fs http://host.docker.internal:3000'
+                        sh 'curl -fs http://frontend:3000'
                     }
                 }
                 echo 'All services are up and healthy!'
